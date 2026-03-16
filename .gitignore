@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Archivos de desarrollo local
+prompt-*.md
+scrape-ushuaia.mjs
+scripts/debug-page.html
+scripts/properties-scraped.json
