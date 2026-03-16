@@ -3,7 +3,6 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react"
 import { DayPicker } from "react-day-picker"
 import type { DateRange } from "react-day-picker"
-import "react-day-picker/style.css"
 import { eachDayOfInterval, format } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarDays, Users, CheckCircle, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react"
@@ -52,8 +51,8 @@ export default function BookingWidget({ property, bookedRanges = [], serviceFeeP
         setShowCalendar(false)
       }
     }
-    if (showCalendar) document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
+    if (showCalendar) document.addEventListener("pointerdown", handler)
+    return () => document.removeEventListener("pointerdown", handler)
   }, [showCalendar])
 
   const [guests, setGuests] = useState(1)

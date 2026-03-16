@@ -14,7 +14,6 @@ import { createClient } from "@/lib/supabase/server"
 import { getPropertyBySlug, getReviewsByProperty, getBookingDatesForProperty, getServiceFeePercent } from "@/lib/supabase/queries"
 import PropertyGallery from "@/components/property/PropertyGallery"
 import BookingWidget from "@/components/property/BookingWidget"
-import AvailabilityCalendar from "@/components/property/AvailabilityCalendar"
 import ReviewsList from "@/components/property/ReviewsList"
 import ReviewForm from "@/components/property/ReviewForm"
 import { MapAccordion } from "@/components/property/MapAccordion"
@@ -173,15 +172,6 @@ export default async function PropertyPage({ params }: PageProps) {
                 </BlurFade>
               </>
             )}
-
-            {/* Disponibilidad */}
-            <Separator className="bg-white/10" />
-            <BlurFade delay={0.28} inView>
-              <div className="flex flex-col gap-4">
-                <h2 className="font-display text-2xl text-snow">Disponibilidad</h2>
-                <AvailabilityCalendar bookedRanges={bookedRanges} />
-              </div>
-            </BlurFade>
 
             {/* Ubicación */}
             {property.latitude && property.longitude && (

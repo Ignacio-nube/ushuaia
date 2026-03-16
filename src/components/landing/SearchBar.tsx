@@ -28,8 +28,8 @@ export default function SearchBar() {
         setCalOpen(false)
       }
     }
-    if (calOpen) document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
+    if (calOpen) document.addEventListener("pointerdown", handler)
+    return () => document.removeEventListener("pointerdown", handler)
   }, [calOpen])
 
   const handleSelect = useCallback((r: DateRange | undefined) => {
@@ -107,12 +107,12 @@ export default function SearchBar() {
                 mode="range"
                 selected={range}
                 onSelect={handleSelect}
-                numberOfMonths={2}
+                numberOfMonths={1}
                 locale={es}
                 disabled={{ before: new Date() }}
                 classNames={{
-                  months: "flex flex-col sm:flex-row gap-5",
-                  month: "flex flex-col gap-3 min-w-[220px]",
+                  months: "flex flex-col gap-5",
+                  month: "flex flex-col gap-3",
                   month_caption: "flex items-center justify-center h-8 relative",
                   caption_label: "text-sm font-semibold capitalize",
                   nav: "absolute inset-x-0 top-0 flex items-center justify-between z-10 pointer-events-none",
@@ -191,7 +191,7 @@ export default function SearchBar() {
           label="Huéspedes"
           className="border-t border-white/10 sm:border-t-0"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => setGuests(Math.max(1, guests - 1))}

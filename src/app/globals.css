@@ -5,6 +5,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  background-color: #0A1628;
+}
+
 @theme inline {
   /* Fonts */
   --font-sans: 'DM Sans', system-ui, sans-serif;
