@@ -2,6 +2,7 @@
 
 import { NumberTicker } from "@/components/ui/number-ticker"
 import { SectionReveal } from "@/components/shared/SectionReveal"
+import { LightRays } from "@/components/ui/light-rays"
 
 const stats = [
   { value: 40,   suffix: "+", label: "Propiedades" },
@@ -13,6 +14,7 @@ const stats = [
 export default function StatsSection() {
   return (
     <section
+      className="relative overflow-hidden"
       style={{
         padding: "clamp(60px, 8vw, 120px) 0",
         background: "radial-gradient(ellipse at center, #0D2137 0%, #0A1628 70%)",
@@ -20,6 +22,7 @@ export default function StatsSection() {
         borderBottom: "1px solid rgba(78,205,196,0.2)",
       }}
     >
+      <LightRays count={6} color="rgba(78,205,196,0.18)" blur={38} speed={18} length="75vh" />
       <SectionReveal>
         <div className="mx-auto" style={{ maxWidth: "1200px", padding: "0 24px" }}>
           <div className="grid grid-cols-2 md:grid-cols-4">

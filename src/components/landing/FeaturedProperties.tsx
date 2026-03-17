@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
 import PropertyCard, { PropertyCardSkeleton } from "@/components/property/PropertyCard"
 import { SectionReveal, StaggerReveal, StaggerItem } from "@/components/shared/SectionReveal"
+import { LightRays } from "@/components/ui/light-rays"
+import { SparklesText } from "@/components/ui/sparkles-text"
 import { Suspense } from "react"
 import type { Property } from "@/types/database"
 
@@ -50,9 +52,10 @@ function FeaturedGridSkeleton() {
 export default function FeaturedProperties() {
   return (
     <section
-      className="px-4 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 sm:px-6 lg:px-8"
       style={{ padding: "clamp(60px, 8vw, 120px) 0", background: "#0A1628" }}
     >
+      <LightRays count={4} color="rgba(78,205,196,0.14)" blur={50} speed={22} length="65vh" />
       <div className="mx-auto" style={{ maxWidth: "1200px", padding: "0 24px" }}>
         {/* Header */}
         <SectionReveal>
@@ -68,7 +71,13 @@ export default function FeaturedProperties() {
                 className="font-display font-light text-snow"
                 style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.5px" }}
               >
-                Propiedades destacadas
+                <SparklesText
+                  className="font-display font-light"
+                  sparklesCount={5}
+                  colors={{ first: "#4ECDC4", second: "#7BB8D4" }}
+                >
+                  Propiedades destacadas
+                </SparklesText>
               </h2>
               <p className="text-frost/65 max-w-md" style={{ fontSize: "15px", lineHeight: 1.7 }}>
                 Los alojamientos mejor valorados en Ushuaia, elegidos por nuestros huéspedes.

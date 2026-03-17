@@ -5,6 +5,8 @@ import { Send, CheckCircle, ShieldCheck, MapPin, Star } from "lucide-react"
 import { BorderBeam } from "@/components/ui/border-beam"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
 import { SectionReveal } from "@/components/shared/SectionReveal"
+import { LightRays } from "@/components/ui/light-rays"
+import { SparklesText } from "@/components/ui/sparkles-text"
 import PublishPropertyDialog from "@/components/landing/PublishPropertyDialog"
 
 const features = [
@@ -50,8 +52,10 @@ export default function AboutSection() {
   return (
     <section
       id="about"
+      className="relative overflow-hidden"
       style={{ padding: "clamp(60px, 8vw, 120px) 0", background: "#0A1628" }}
     >
+      <LightRays count={4} color="rgba(160,210,255,0.12)" blur={52} speed={24} length="60vh" />
       <div className="mx-auto px-4 sm:px-6" style={{ maxWidth: "1200px", padding: "0 24px" }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
@@ -68,7 +72,13 @@ export default function AboutSection() {
                 className="font-display font-light text-snow mt-3 leading-tight"
                 style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.5px" }}
               >
-                La plataforma de alquileres del fin del mundo
+                <SparklesText
+                  className="font-display font-light"
+                  sparklesCount={6}
+                  colors={{ first: "#4ECDC4", second: "#7BB8D4" }}
+                >
+                  La plataforma de alquileres del fin del mundo
+                </SparklesText>
               </h2>
             </div>
 

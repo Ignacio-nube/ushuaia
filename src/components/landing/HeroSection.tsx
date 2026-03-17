@@ -6,6 +6,8 @@ import { ChevronDown } from "lucide-react"
 import { Particles } from "@/components/ui/particles"
 import { Meteors } from "@/components/ui/meteors"
 import { TypingAnimation } from "@/components/ui/typing-animation"
+import { LightRays } from "@/components/ui/light-rays"
+import { AuroraText } from "@/components/ui/aurora-text"
 import SearchBar from "./SearchBar"
 
 const HERO_IMAGE = "/heroimg.png"
@@ -69,6 +71,17 @@ export default function HeroSection() {
         </div>
       )}
 
+      {/* Light Rays — rayos de luz como nieve polar */}
+      {mounted && (
+        <LightRays
+          count={9}
+          color="rgba(200, 230, 255, 0.22)"
+          blur={40}
+          speed={16}
+          length="90vh"
+        />
+      )}
+
       {/* Contenido principal */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 gap-7 max-w-4xl mx-auto w-full">
 
@@ -99,17 +112,12 @@ export default function HeroSection() {
         >
           Alquilá en el
           <br />
-          <em
-            className="not-italic"
-            style={{
-              background: "linear-gradient(135deg, #E8F4F8 0%, #4ECDC4 50%, #7BB8D4 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
+          <AuroraText
+            colors={["#E8F4F8", "#4ECDC4", "#7BB8D4", "#2E6DA4", "#E8F4F8"]}
+            speed={0.5}
           >
             Fin del Mundo
-          </em>
+          </AuroraText>
         </motion.h1>
 
         {/* Subtítulo con TypingAnimation */}

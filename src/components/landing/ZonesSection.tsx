@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { SectionReveal, StaggerReveal, StaggerItem } from "@/components/shared/SectionReveal"
+import { LightRays } from "@/components/ui/light-rays"
 import type { Zone } from "@/types/database"
 
 const ZONE_IMAGES: Record<string, string> = {
@@ -131,9 +132,10 @@ export default async function ZonesSection() {
 
   return (
     <section
-      className="px-4 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 sm:px-6 lg:px-8"
       style={{ padding: "clamp(60px, 8vw, 120px) 0", background: "#0D2137" }}
     >
+      <LightRays count={5} color="rgba(123,184,212,0.16)" blur={44} speed={20} length="70vh" />
       <div className="mx-auto" style={{ maxWidth: "1200px", padding: "0 24px" }}>
 
         {/* Header */}
