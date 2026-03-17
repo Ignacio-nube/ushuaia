@@ -404,6 +404,8 @@ export default function MapSearchPage() {
     filteredPropsRef.current = allPropsRef.current
     setIsFiltered(false)
     setFilteredProperties(allPropsRef.current)
+    // On mobile, close the panel so the map is fully visible for drawing
+    if (isMobileRef.current) setIsPanelOpen(false)
     requestAnimationFrame(() => rebuildMarkersRef.current())
   }
 
@@ -432,7 +434,10 @@ export default function MapSearchPage() {
       {/* Barra superior */}
       <div
         className="fixed top-0 inset-x-0 z-10 flex items-center justify-between px-5 h-14"
-        style={{ background: "linear-gradient(to bottom, rgba(5,14,26,0.9) 60%, transparent)" }}
+        style={{
+          background: "linear-gradient(to bottom, rgba(5,14,26,0.9) 60%, transparent)",
+          paddingTop: "env(safe-area-inset-top, 0px)",
+        }}
       >
         <a href="/" className="flex items-center shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -468,8 +473,8 @@ export default function MapSearchPage() {
         )}
       </AnimatePresence>
 
-      {/* Controles principales */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+      {/* Controles principales — en mobile solo visibles cuando el panel está cerrado */}
+      {(!isMobile || !isPanelOpen) && <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
         <AnimatePresence mode="wait">
           {isDrawing && !hasPolygon ? (
             <motion.button
@@ -527,10 +532,10 @@ export default function MapSearchPage() {
             </motion.button>
           )}
         </AnimatePresence>
-      </div>
+      </div>}
 
-      {/* Badge con contador de marcadores visibles */}
-      {mapReady && allProperties.length > 0 && (
+      {/* Badge con contador de marcadores visibles — solo desktop */}
+      {mapReady && allProperties.length > 0 && !isMobile && (
         <div
           className="fixed bottom-8 left-5 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs"
           style={{
@@ -630,7 +635,29 @@ export default function MapSearchPage() {
                 </button>
               </div>
 
-              {!isFiltered && !isDrawing && (
+              {/* Mobile: botón de acción de dibujo dentro del panel */}
+              {isMobile && (
+                <button
+                  onClick={hasPolygon ? clearDrawing : startDrawing}
+                  className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-opacity active:opacity-80"
+                  style={hasPolygon ? {
+                    background: "rgba(255,107,107,0.1)",
+                    border: "1px solid rgba(255,107,107,0.35)",
+                    color: "#FF6B6B",
+                  } : {
+                    background: "linear-gradient(135deg, #4ECDC4, #2E8B8B)",
+                    color: "#0A1628",
+                    boxShadow: "0 2px 16px rgba(78,205,196,0.3)",
+                  }}
+                >
+                  {hasPolygon
+                    ? <><RotateCcw className="size-4" /> Limpiar zona</>
+                    : <><Pencil className="size-4" /> Dibujá tu zona de búsqueda</>
+                  }
+                </button>
+              )}
+
+              {!isMobile && !isFiltered && !isDrawing && (
                 <p className="text-xs mt-3" style={{ color: "rgba(123,184,212,0.55)" }}>
                   Activá &quot;Dibujá tu zona&quot; para filtrar por área del mapa
                 </p>
@@ -732,9 +759,9 @@ export default function MapSearchPage() {
         )}
       </AnimatePresence>
 
-      {/* Botón para reabrir el panel */}
+      {/* Botón para reabrir el panel — se oculta mientras se dibuja */}
       <AnimatePresence>
-        {!isPanelOpen && (
+        {!isPanelOpen && !isDrawing && (
           <motion.button
             initial={isMobile ? { opacity: 0, y: 20 } : { opacity: 0, x: 20 }}
             animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }}

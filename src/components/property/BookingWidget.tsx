@@ -237,17 +237,20 @@ export default function BookingWidget({ property, bookedRanges = [], serviceFeeP
                     modifiers={{ booked: bookedDays }}
                     locale={es}
                     classNames={{
+                      root: "w-full",
                       months: "flex flex-col gap-4",
-                      month: "flex flex-col gap-2",
+                      month: "flex flex-col gap-2 w-full",
                       month_caption: "flex items-center justify-center h-8 relative",
                       caption_label: "text-sm font-medium",
                       nav: "absolute inset-x-0 top-0 flex items-center justify-between z-10 pointer-events-none",
                       button_previous: "pointer-events-auto size-7 flex items-center justify-center rounded-lg transition-colors hover:bg-white/8",
                       button_next: "pointer-events-auto size-7 flex items-center justify-center rounded-lg transition-colors hover:bg-white/8",
+                      month_grid: "w-full table-fixed border-collapse",
                       weekdays: "flex",
                       weekday: "flex-1 h-7 flex items-center justify-center text-[10px] font-medium uppercase",
-                      week: "flex mt-0.5",
-                      day: "flex-1 aspect-square p-0",
+                      weeks: "flex flex-col gap-0.5",
+                      week: "flex",
+                      day: "flex-1 min-w-0 aspect-square p-0",
                       day_button: "w-full h-full text-xs transition-colors",
                       range_start: "",
                       range_middle: "",

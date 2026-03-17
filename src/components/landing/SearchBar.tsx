@@ -100,7 +100,7 @@ export default function SearchBar() {
                 background: "#081422",
                 border: "1px solid rgba(78,205,196,0.25)",
                 boxShadow: "0 20px 60px rgba(0,0,0,0.75)",
-                minWidth: "min(680px, 95vw)",
+                minWidth: "min(320px, 96vw)",
               }}
             >
               <DayPicker
@@ -111,17 +111,20 @@ export default function SearchBar() {
                 locale={es}
                 disabled={{ before: new Date() }}
                 classNames={{
+                  root: "w-full",
                   months: "flex flex-col gap-5",
-                  month: "flex flex-col gap-3",
+                  month: "flex flex-col gap-3 w-full",
                   month_caption: "flex items-center justify-center h-8 relative",
                   caption_label: "text-sm font-semibold capitalize",
                   nav: "absolute inset-x-0 top-0 flex items-center justify-between z-10 pointer-events-none",
                   button_previous: "pointer-events-auto size-8 flex items-center justify-center rounded-lg transition-colors",
                   button_next: "pointer-events-auto size-8 flex items-center justify-center rounded-lg transition-colors",
+                  month_grid: "w-full table-fixed border-collapse",
                   weekdays: "flex",
                   weekday: "flex-1 h-8 flex items-center justify-center text-[11px] font-medium uppercase",
-                  week: "flex mt-1",
-                  day: "flex-1 aspect-square p-0",
+                  weeks: "flex flex-col gap-0.5",
+                  week: "flex",
+                  day: "flex-1 min-w-0 aspect-square p-0",
                   day_button: "w-full h-full rounded-lg text-sm transition-colors",
                   range_start: "rounded-r-none",
                   range_middle: "rounded-none",
