@@ -30,7 +30,7 @@ function injectMarkerStyles() {
   const style = document.createElement("style")
   style.id = "map-marker-styles"
   style.textContent = `
-    .property-marker { cursor: pointer; user-select: none; }
+    .property-marker { cursor: pointer; user-select: none; display: block; text-decoration: none; }
     .marker-pill {
       background: rgba(13,33,55,0.92);
       border: 1.5px solid rgba(78,205,196,0.4);
@@ -109,13 +109,15 @@ export default function MapSearchPage() {
   const [isDrawing, setIsDrawing] = useState(false)
   const [hasPolygon, setHasPolygon] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
-  const [isPanelOpen, setIsPanelOpen] = useState(true)
+  const [isPanelOpen, setIsPanelOpen] = useState(false)
   const [mapReady, setMapReady] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
   const displayedProperties = isFiltered ? filteredProperties : allProperties
 
-  // ── Responsive detection ───────────────────────────────────────────────
+  // ── Responsive detection + initial panel open ─────────────────────────
+  // isPanelOpen starts false so the panel only opens once isMobile is known.
+  // React 18 batches both setState calls → single render → correct animation.
   useEffect(() => {
     function check() {
       const mobile = window.innerWidth < 640
@@ -123,6 +125,7 @@ export default function MapSearchPage() {
       isMobileRef.current = mobile
     }
     check()
+    setIsPanelOpen(true)   // opens with correct isMobile already set
     window.addEventListener("resize", check)
     return () => window.removeEventListener("resize", check)
   }, [])
@@ -178,7 +181,9 @@ export default function MapSearchPage() {
     list.forEach((property) => {
       if (!property.latitude || !property.longitude) return
 
-      const el = document.createElement("div")
+      // Use <a> so iOS Safari treats it as a native tappable element
+      const el = document.createElement("a")
+      el.href = `/properties/${property.slug}`
       el.className = "property-marker"
 
       const pill = document.createElement("div")
@@ -187,9 +192,6 @@ export default function MapSearchPage() {
       el.appendChild(pill)
       markerPillsRef.current.set(property.id, pill)
 
-      el.addEventListener("click", () => {
-        window.location.href = `/properties/${property.slug}`
-      })
       el.addEventListener("mouseenter", () => updateHover(property.id))
       el.addEventListener("mouseleave", () => updateHover(null))
 
@@ -473,8 +475,8 @@ export default function MapSearchPage() {
         )}
       </AnimatePresence>
 
-      {/* Controles principales — en mobile solo visibles cuando el panel está cerrado */}
-      {(!isMobile || !isPanelOpen) && <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+      {/* Controles principales — en mobile solo visibles cuando se está dibujando (el botón de dibujo vive dentro del panel) */}
+      {(!isMobile || isDrawing) && <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
         <AnimatePresence mode="wait">
           {isDrawing && !hasPolygon ? (
             <motion.button
