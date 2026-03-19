@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Fin del Mundo Stays** — plataforma de alquiler temporario en Ushuaia, Patagonia Argentina.
 
-**Stack:** Next.js 14 (App Router) · TypeScript · Tailwind CSS v4 · Supabase · shadcn/ui · Framer Motion · lucide-react
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Supabase · shadcn/ui · Framer Motion / motion · lucide-react · Mapbox GL JS · Recharts
 
 ## Commands
 
@@ -20,13 +20,19 @@ npm run lint       # ESLint
 
 ```
 src/
-  app/             # Next.js App Router — Server Components por defecto
+  app/
+    (public)/      # Layout público (Navbar + Footer)
+      page.tsx     # Landing
+      properties/  # Listado + /[slug] detalle
+    admin/         # Panel admin: dashboard, bookings, properties, leads, reviews, settings, analytics
+    api/           # Route Handlers (e.g. admin/test-email)
+    map-search/    # Página de búsqueda por mapa (Mapbox GL, sin layout público)
   components/
-    ui/            # shadcn/ui (auto-generados, no modificar manualmente)
-    layout/        # Navbar, Footer
-    landing/       # HeroSection, SearchBar, FeaturedProperties, ZonesSection, StatsSection
-    property/      # PropertyCard, PropertyGallery, BookingWidget, ReviewsList
-    shared/        # DateRangePicker, GuestSelector, AmenityBadge
+    ui/            # shadcn/ui + MagicUI (auto-generados, no modificar manualmente)
+    admin/         # AdminSidebar, AdminTopbar, BookingsCalendar, BookingsChart, ZoneDonutChart, RealtimeBookings
+    landing/       # HeroSection, SearchBar, FeaturedProperties, ZonesSection, StatsSection, AboutSection, PublishPropertyDialog
+    property/      # PropertyCard, PropertyGallery, BookingWidget, ReviewsList, ReviewForm, PropertyFilters, AvailabilityCalendar, MapAccordion
+    shared/        # Logo, SectionReveal
   lib/supabase/
     client.ts      # Browser client (usar en 'use client' components)
     server.ts      # Server client (usar en Server Components y Route Handlers)
@@ -34,6 +40,18 @@ src/
   types/
     database.ts    # Tipos de Supabase (Property, Zone, Booking, Review)
 ```
+
+### Páginas clave
+
+- `/` — Landing con Hero (Particles + LightRays + AuroraText), FeaturedProperties, ZonesSection, StatsSection
+- `/properties` — Filtros + paginación, con link a `/map-search`
+- `/properties/[slug]` — Galería, BookingWidget, AvailabilityCalendar, MapAccordion, Reviews
+- `/map-search` — Mapa Mapbox GL con dibujo de polígono (turf.js) para filtrar propiedades por zona; panel lateral responsivo (bottom sheet en mobile)
+- `/admin` — Dashboard con KPIs, BookingsChart (Recharts), ZoneDonutChart, RealtimeBookings (Supabase Realtime)
+
+### MagicUI components en uso
+
+Ubicados en `src/components/ui/`: `light-rays`, `aurora-text`, `sparkles-text`, `animated-gradient-text`, `blur-fade`, `border-beam`, `magic-card`, `meteors`, `number-ticker`, `particles`, `shimmer-button`, `typing-animation`.
 
 ## Design System
 
@@ -72,6 +90,7 @@ Variables de entorno requeridas en `.env.local`:
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_MAPBOX_TOKEN=   # Requerido para /map-search y MapAccordion
 ```
 
 ## shadcn/ui Rules
@@ -88,17 +107,19 @@ SUPABASE_SERVICE_ROLE_KEY=
 
 Mostrar en ARS con formato: `$150.000/noche` (no USD, no símbolo $-dollar sin separador de miles).
 
-## Implementación (pasos restantes)
+## Dependencias notables
 
-1. ✅ Setup base (Next.js + Tailwind + shadcn + variables de entorno)
-2. ⬜ Supabase schema (SQL + tipos TypeScript)
-3. ✅ Design tokens (globals.css con variables CSS + fuentes)
-4. ✅ Layout (Navbar + Footer)
-5. ✅ Landing Hero (imagen de fondo + SearchBar glassmorphism + Particles)
-6. ✅ PropertyCard
-7. ✅ Featured Properties (grid con datos de Supabase)
-8. ✅ Zones Section
-9. ✅ Stats + About
-10. ✅ Página /properties (filtros + queries + paginación)
-11. ✅ Página /properties/[slug] (galería + BookingWidget + Reviews)
-12. ✅ Admin Panel
+- `mapbox-gl` + `@mapbox/mapbox-gl-draw` + `@turf/turf` — búsqueda por mapa con polígono
+- `recharts` — gráficos en admin (BookingsChart, ZoneDonutChart)
+- `yet-another-react-lightbox` — galería de imágenes en /properties/[slug]
+- `react-day-picker` — calendario de disponibilidad
+- `sonner` — toasts
+- `motion` (alias de framer-motion v12) — animaciones; usar `from 'motion/react'`
+
+## Implementación (estado actual)
+
+Todo completado:
+- Setup, design tokens, layout, landing con efectos MagicUI
+- /properties (filtros + paginación) + /properties/[slug] (galería + booking + reviews)
+- /map-search (Mapbox GL con polygon draw)
+- Admin Panel completo (dashboard, bookings, properties, leads, reviews, analytics, settings)
